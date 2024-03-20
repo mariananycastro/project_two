@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  app:
+    container_name: app-two
+    tty: true
+    stdin_open: true
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "4000:3000"
+    volumes:
+      - .:/app
+      - rubygems:/usr/local/bundle
+volumes:
+  rubygems:
+  project-two-data:
