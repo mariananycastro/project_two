@@ -68,11 +68,15 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
+    amq-protocol (2.3.2)
     base64 (0.2.0)
     bindex (0.8.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
     builder (3.2.4)
+    bunny (2.22.0)
+      amq-protocol (~> 2.3, >= 2.3.1)
+      sorted_set (~> 1, >= 1.0.2)
     capybara (3.40.0)
       addressable
       matrix
@@ -172,6 +176,7 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.1.0)
+    rbtree (0.4.6)
     rdoc (6.6.2)
       psych (>= 4.0.0)
     regexp_parser (2.9.0)
@@ -184,6 +189,10 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    set (1.1.0)
+    sorted_set (1.0.3)
+      rbtree
+      set (~> 1.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -221,6 +230,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap
+  bunny (>= 2.19.0)
   capybara
   debug
   graphiql-rails

@@ -29,3 +29,4 @@ end
 
 gem "graphql"
 gem "graphiql-rails", group: :development
+gem "bunny", ">= 2.19.0"
