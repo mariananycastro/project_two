@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'net/http'
 
 class GraphqlController < ApplicationController
   skip_before_action :verify_authenticity_token
