@@ -7,7 +7,6 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
     <<-GRAPHQL
       query {
         policiesByEmailQuery(email: "maria@email.com") {
-          id
           effectiveFrom
           effectiveUntil
           insuredPerson {
@@ -30,43 +29,39 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
     let(:http_response) do
       [
         {
-          'id': 1,
-          'effective_from': '2024-03-19',
-          'effective_until': '2025-03-19',
-          'insured_person_id': 1,
-          'vehicle_id': 1,
-          'insured_person': {
-            'name': 'Maria Silva',
-            'document': '123.456.789-00',
-            'email': 'maria@email.com'
+          effective_from: '2024-03-19',
+          effective_until: '2025-03-19',
+          insured_person: {
+            name: 'Maria Silva',
+            document: '123.456.789-00',
+            email: 'maria@email.com'
           },
-          'vehicle': {
-            'brand': 'Volkswagen',
-            'vehicle_model': 'Gol 1.6',
-            'year': 2022,
-            'license_plate': 'ABC-5678'
+          vehicle: {
+            brand: 'Volkswagen',
+            vehicle_model: 'Gol 1.6',
+            year: 2022,
+            license_plate: 'ABC-5678'
           }
         }
       ].to_json
     end
     let(:query_response) do
       {
-        'data': {
-          'policiesByEmailQuery': [
+        data: {
+          policiesByEmailQuery: [
             {
-              'id': '1',
-              'effectiveFrom': '2024-03-19',
-              'effectiveUntil': '2025-03-19',
-              'insuredPerson': {
-                'name': 'Maria Silva',
-                'document': '123.456.789-00',
-                'email': 'maria@email.com'
+              effectiveFrom: '2024-03-19',
+              effectiveUntil: '2025-03-19',
+              insuredPerson: {
+                name: 'Maria Silva',
+                document: '123.456.789-00',
+                email: 'maria@email.com'
               },
-              'vehicle': {
-                'brand': 'Volkswagen',
-                'vehicleModel': 'Gol 1.6',
-                'year': 2022,
-                'licensePlate': 'ABC-5678'
+              vehicle: {
+                brand: 'Volkswagen',
+                vehicleModel: 'Gol 1.6',
+                year: 2022,
+                licensePlate: 'ABC-5678'
               }
             },
           ]
@@ -86,7 +81,7 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
   context 'when policies does NOT exist' do
     let(:query_response) do
       {
-        'data': { 'policiesByEmailQuery': [] }
+        data: { 'policiesByEmailQuery': [] }
       }
     end
 

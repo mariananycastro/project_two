@@ -8,7 +8,6 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
       <<-GRAPHQL
         query {
           policyQuery(id: #{query_id}) {
-            id
             effectiveFrom
             effectiveUntil
             insuredPerson {
@@ -31,41 +30,37 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
       let(:query_id) { 1 }
       let(:http_response) do
         {
-          'id': query_id,
-          'effective_from': '2024-03-19',
-          'effective_until': '2026-03-19',
-          'insured_person_id': 1,
-          'vehicle_id': 2,
-          'insured_person': {
-            'name': 'Maria Silva',
-            'email': 'maria@email.com',
-            'document': '123.456.789-00'
+          effective_from: '2024-03-19',
+          effective_until: '2026-03-19',
+          insured_person: {
+            name: 'Maria Silva',
+            email: 'maria@email.com',
+            document: '123.456.789-00'
           },
-          'vehicle': {
-            'brand': 'Fiat',
-            'vehicle_model': 'Uno 1.0',
-            'year': 1996,
-            'license_plate': 'ABC-1234'
+          vehicle: {
+            brand: 'Fiat',
+            vehicle_model: 'Uno 1.0',
+            year: 1996,
+            license_plate: 'ABC-1234'
           }
         }.to_json
       end
       let(:query_response) do
         {
-          'data': {
-            'policyQuery': {
-              'id': '1',
-              'effectiveFrom': '2024-03-19',
-              'effectiveUntil': '2026-03-19',
-              'insuredPerson': {
-                'name': 'Maria Silva',
-                'email': 'maria@email.com',
-                'document': '123.456.789-00'
+          data: {
+            policyQuery: {
+              effectiveFrom: '2024-03-19',
+              effectiveUntil: '2026-03-19',
+              insuredPerson: {
+                name: 'Maria Silva',
+                email: 'maria@email.com',
+                document: '123.456.789-00'
               },
-              'vehicle': {
-                'brand': 'Fiat',
-                'vehicleModel': 'Uno 1.0',
-                'year': 1996,
-                'licensePlate': 'ABC-1234'
+              vehicle: {
+                brand: 'Fiat',
+                vehicleModel: 'Uno 1.0',
+                year: 1996,
+                licensePlate: 'ABC-1234'
               }
             }
           }
@@ -85,13 +80,12 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
       let(:query_id) { 1 }
       let(:query_response) do
         {
-          'data': {
-            'policyQuery': {
-              'id': nil,
-              'effectiveFrom': nil,
-              'effectiveUntil': nil,
-              'insuredPerson': nil,
-              'vehicle': nil
+          data: {
+            policyQuery: {
+              effectiveFrom: nil,
+              effectiveUntil: nil,
+              insuredPerson: nil,
+              vehicle: nil
             }
           }
         }

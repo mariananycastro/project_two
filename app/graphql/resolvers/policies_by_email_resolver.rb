@@ -8,7 +8,8 @@ module Resolvers
     def resolve(email:)
       uri = URI("#{ENV['APP_ONE_PATH']}/insured_person/#{email}")
       response = Net::HTTP.get_response(uri.host, uri.path, uri.port)
-      JSON.parse(response.body)
+
+      response.body.empty? ? [] : JSON.parse(response.body)
     end
   end
 end

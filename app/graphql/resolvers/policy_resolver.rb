@@ -10,7 +10,8 @@ module Resolvers
     def resolve(id:)
       uri = URI("#{ENV['APP_ONE_PATH']}/policies/#{id}")
       response = Net::HTTP.get_response(uri.host, uri.path, uri.port)
-      JSON.parse(response.body)
+
+      response.body.empty? ? {} : JSON.parse(response.body)
     end
   end
 end
