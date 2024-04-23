@@ -19,8 +19,7 @@ class GraphqlController < ApplicationController
     result = AppSchema.execute(query, variables: variables)
     render json: result
   rescue StandardError => e
-    raise e unless Rails.env.development?
-    handle_error_in_development(e)
+    handle_error(e)
   end
 
   private
@@ -45,7 +44,7 @@ class GraphqlController < ApplicationController
     end
   end
 
-  def handle_error_in_development(e)
+  def handle_error(e)
     logger.error e.message
     logger.error e.backtrace.join("\n")
 

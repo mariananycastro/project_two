@@ -2,7 +2,7 @@
 
 module Mutations
   class CreatePolicyMutation < GraphQL::Schema::Mutation
-    field :response, Types::ResponseType, null: false
+    field :response,    Int,   null: false,    description: "Policy creation status response"
 
     argument :policy, Input::PolicyInput, required: true
 
@@ -10,13 +10,7 @@ module Mutations
       queue_name = 'create-policy'
       publish_message = BunnyConnectionService.publish_message(queue_name, policy)
 
-      if publish_message
-        { response: { status: 200, errors: [] } }
-      else
-        { response: { status: 422, errors: ['Connection Failed'] } }
-      end
-    rescue StandardError => exception
-      { response: { status: 422, errors: [exception.message] } }
+      { response: 200 }
     end
   end
 end

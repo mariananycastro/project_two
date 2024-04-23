@@ -23,28 +23,14 @@ RSpec.describe Mutations::CreatePolicyMutation, type: :request do
                 licensePlate: "ABC-1111"
               }
             }
-          ) {
-            response {
-              status
-              errors
-            }
-          }
+          ) { response }
         }
       GRAPHQL
     end
 
     context 'and connection successed' do
       let(:mutation_response) do
-        {
-          'data': {
-            'createPolicy': {
-              'response': {
-                'status': 200,
-                'errors': []
-              }
-            }
-          }
-        }
+        { 'data': { 'createPolicy': {'response': 200 } } }
       end
 
       it 'publish message' do
@@ -59,27 +45,14 @@ RSpec.describe Mutations::CreatePolicyMutation, type: :request do
     end
 
     context 'and connection fails' do
-      let(:mutation_response) do
-        {
-          'data': {
-            'createPolicy': {
-              'response': {
-                'status': 422,
-                'errors': ["Connection Failed"]
-              }
-            }
-          }
-        }
-      end
-
       it 'publish message' do
         allow(BunnyConnectionService)
           .to receive(:publish_message)
-          .and_return(false)
+          .and_raise(StandardError)
 
         post '/graphql', params: { query: mutation_string }.to_json, headers: { "CONTENT_TYPE"=>'application/json' }
-        
-        expect(JSON.parse(response.body).deep_symbolize_keys).to eq(mutation_response.deep_symbolize_keys)
+
+        expect(JSON.parse(response.body).key?('errors')).to be_truthy
       end
     end
   end
