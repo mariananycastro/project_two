@@ -9,13 +9,22 @@ class GraphqlController < ApplicationController
   # protect_from_forgery with: :null_session
 
   def execute
+    jwt_token = request.headers['Authorization']&.split(' ')&.last
+
+    decoded_token = JWT.decode(jwt_token, ENV['JWT_SECRET'], true, algorithm: ENV['JWT_ALGORITHM'])
+    puts 'exp'
+    puts decoded_token.first['exp'] 
+
+    query = JSON.parse(decoded_token[0])['query']
+
+    # rescue JWT::ExpiredSignature
+    #   render json: { error: 'JWT token has expired' }, status: :unauthorized
+    # rescue JWT::DecodeError
+    #   render json: { error: 'Invalid JWT token' }, status: :unauthorized
+    # end
+
     variables = prepare_variables(params[:variables])
-    query = params[:query]
-    # operation_name = params[:operationName]
-    # context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
-    # }
+
     result = AppSchema.execute(query, variables: variables)
     render json: result
   rescue StandardError => e
