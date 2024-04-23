@@ -1,6 +1,10 @@
 class BunnyConnectionService
   def self.publish_message(queue_name, message)
-    conn = Bunny.new(hostname: 'rabbitmq', username: 'guest', password: 'guest')
+    conn = Bunny.new(
+      hostname: ENV['RABBIT_HOST'],
+      username: ENV['RABBIT_USER'],
+      password: ENV['RABBIT_PASSWORD']
+    )
     conn.start
 
     return false if conn.status != :open 
