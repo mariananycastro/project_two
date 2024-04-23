@@ -7,8 +7,8 @@ module Resolvers
     type [Types::PolicyType], null: true
     
     def resolve
-      uri = URI("#{ENV['APP_ONE_PATH']}/policies/")
-      response = Net::HTTP.get_response(uri.host, uri.path, uri.port)
+      path = "policies/"
+      response = Clients::AppOneClient.execute(path)
 
       response.body.empty? ? [] : JSON.parse(response.body)
     end

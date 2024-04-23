@@ -6,9 +6,9 @@ module Resolvers
     argument :email, String, required: true
     
     def resolve(email:)
-      uri = URI("#{ENV['APP_ONE_PATH']}/insured_person/#{email}")
-      response = Net::HTTP.get_response(uri.host, uri.path, uri.port)
-
+      path = "insured_person/#{email}"
+      response = Clients::AppOneClient.execute(path)
+      
       response.body.empty? ? [] : JSON.parse(response.body)
     end
   end
