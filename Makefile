@@ -13,3 +13,7 @@ rabbit:
 
 stop: # make stop container_name=rabbitmq
 	docker stop ${container_name}
+
+server:
+	docker compose up -d
+	docker exec -it app-two /bin/sh -c "bundle exec rackup --host 0.0.0.0 -p 4000"

@@ -13,9 +13,12 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
+gem 'dotenv', require: 'dotenv/load'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'rspec-rails'
+  gem 'pry-byebug'
 end
 
 group :development do
@@ -25,6 +28,7 @@ end
 group :test do
   gem "capybara"
   gem "selenium-webdriver"
+  gem 'webmock'
 end
 
 gem "graphql"

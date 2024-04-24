@@ -4,10 +4,9 @@ module Types
   class PolicyType < GraphQL::Schema::Object
     description 'Policy'
 
-    field :id,                ID,                       null: false
-    field :effective_from,    String,                   null: false
-    field :effective_until,   String,                   null: false
-    field :insured_person,    Types::InsuredPersonType, null: false
-    field :vehicle,           Types::VehicleType,       null: false
+    field :effective_from,    String,                   null: true
+    field :effective_until,   String,                   null: true
+    field :insured_person,    Types::InsuredPersonType, null: true
+    field :vehicle,           Types::VehicleType,       null: true
   end
 end
