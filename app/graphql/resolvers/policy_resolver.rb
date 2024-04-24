@@ -8,8 +8,8 @@ module Resolvers
     argument :id, ID, required: true
 
     def resolve(id:)
-      uri = URI("#{ENV['APP_ONE_PATH']}/policies/#{id}")
-      response = Net::HTTP.get_response(uri.host, uri.path, uri.port)
+      path = "policies/#{id}"
+      response = Clients::AppOneClient.execute(path)
 
       response.body.empty? ? {} : JSON.parse(response.body)
     end
