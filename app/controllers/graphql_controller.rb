@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'net/http'
 
 class GraphqlController < ApplicationController
@@ -7,6 +8,7 @@ class GraphqlController < ApplicationController
   def execute
     query = params[:query]
     jwt_token = request.headers['Authorization']&.split(' ')&.last
+
     decoded_token = JWT.decode(jwt_token, ENV['JWT_SECRET'], true, algorithm: ENV['JWT_ALGORITHM'])
 
     result = AppSchema.execute(query)
