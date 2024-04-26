@@ -3,6 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe Mutations::CreatePolicyMutation, type: :request do
+  let(:headers) do
+    expires_at = 10.hours.from_now
+    jwt_token = JWT.encode({ exp: expires_at.to_i }, ENV['JWT_SECRET'], ENV['JWT_ALGORITHM'])
+
+    {
+      'Content-Type' => 'application/json',
+      'Authorization' => "Bearer #{jwt_token}"
+    }
+  end
+
   context 'when all attributes are sent' do
     let(:mutation_string) do
       <<-GRAPHQL
@@ -27,6 +37,9 @@ RSpec.describe Mutations::CreatePolicyMutation, type: :request do
         }
       GRAPHQL
     end
+    subject(:graphql_request) do
+      post '/graphql', params: { query: mutation_string }.to_json, headers: headers
+    end
 
     context 'and connection successed' do
       let(:mutation_response) do
@@ -38,7 +51,7 @@ RSpec.describe Mutations::CreatePolicyMutation, type: :request do
           .to receive(:publish_message)
           .and_return(true)
 
-        post '/graphql', params: { query: mutation_string }.to_json, headers: { "CONTENT_TYPE"=>'application/json' }
+          graphql_request
 
         expect(JSON.parse(response.body).deep_symbolize_keys).to eq(mutation_response.deep_symbolize_keys)
       end
@@ -50,7 +63,7 @@ RSpec.describe Mutations::CreatePolicyMutation, type: :request do
           .to receive(:publish_message)
           .and_raise(StandardError)
 
-        post '/graphql', params: { query: mutation_string }.to_json, headers: { "CONTENT_TYPE"=>'application/json' }
+        graphql_request
 
         expect(JSON.parse(response.body).key?('errors')).to be_truthy
       end
@@ -85,6 +98,10 @@ RSpec.describe Mutations::CreatePolicyMutation, type: :request do
         }
       GRAPHQL
     end
+    subject(:graphql_request) do
+      post '/graphql', params: { query: mutation_without_effective_from }.to_json, headers: headers
+    end
+
     context 'and connection successed' do
       let(:error_message) do
         "Argument 'effectiveFrom' on InputObject 'PolicyInput' is required. Expected type String!"
@@ -95,7 +112,7 @@ RSpec.describe Mutations::CreatePolicyMutation, type: :request do
           .to receive(:publish_message)
           .and_return(true)
 
-        post '/graphql', params: { query: mutation_without_effective_from }.to_json, headers: { "CONTENT_TYPE"=>'application/json' }
+        graphql_request
 
         parsed_response = JSON.parse(response.body).deep_symbolize_keys
 

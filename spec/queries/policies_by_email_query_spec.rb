@@ -3,6 +3,18 @@
 require 'rails_helper'
 
 RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
+  let(:headers) do
+    expires_at = 10.hours.from_now
+    jwt_token = JWT.encode({ exp: expires_at.to_i }, ENV['JWT_SECRET'], ENV['JWT_ALGORITHM'])
+
+    {
+      'Content-Type' => 'application/json',
+      'Authorization' => "Bearer #{jwt_token}"
+    }
+  end
+  subject(:graphql_request) do
+    post '/graphql', params: { query: policies_query }.to_json, headers: headers
+  end
   let(:policies_query) do
     <<-GRAPHQL
       query {
@@ -72,7 +84,7 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
     it 'return policy info' do
       stub_request(:get, "#{ENV['APP_ONE_PATH']}/insured_person/maria@email.com").to_return(status: 200, body: http_response)
 
-      post '/graphql', params: { query: policies_query }.to_json, headers: { "CONTENT_TYPE"=>'application/json' }
+      graphql_request
 
       expect(JSON.parse(response.body).deep_symbolize_keys).to eq(query_response.deep_symbolize_keys)
     end
@@ -88,7 +100,7 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
     it 'return policy info' do
       stub_request(:get, "#{ENV['APP_ONE_PATH']}/insured_person/maria@email.com").to_return(status: 200, body: {}.to_json)
 
-      post '/graphql', params: { query: policies_query }.to_json, headers: { "CONTENT_TYPE"=>'application/json' }
+      graphql_request
 
       expect(JSON.parse(response.body).deep_symbolize_keys).to eq(query_response.deep_symbolize_keys)
     end
