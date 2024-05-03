@@ -10,7 +10,7 @@ class StripeController < ApplicationController
 
     # Check if webhook signing is configured.
     # Retrieve the event by verifying the signature using the raw body and secret.
-    signature = request.env['HTTP_STRIPE_SIGNATURE'];
+    signature = request.env['HTTP_STRIPE_SIGNATURE']
 
     begin
       event = Stripe::Webhook.construct_event(
@@ -26,7 +26,6 @@ class StripeController < ApplicationController
       head :bad_request
       return
     end
-
     response = false
     session = event.data.object
     case event.type

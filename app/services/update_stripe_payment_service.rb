@@ -1,4 +1,6 @@
 class UpdateStripePaymentService
+  QUEUE = 'update-payment'
+
   attr_reader :payload
 
   def initialize(payload)
@@ -10,7 +12,6 @@ class UpdateStripePaymentService
   end
 
   def execute
-    queue_name = 'update-payment'
-    publish_message = BunnyConnectionService.publish_message(queue_name, payload)
+    publish_message = BunnyConnectionService.publish_message(QUEUE, payload)
   end
 end
