@@ -5,7 +5,7 @@ module Resolvers
     description "Get a policies"
 
     type [Types::PolicyType], null: true
-    
+
     def resolve
       path = "policies/"
       response = Clients::AppOneClient.execute(path)

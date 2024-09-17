@@ -21,6 +21,7 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
         policiesByEmailQuery(email: "maria@email.com") {
           effectiveFrom
           effectiveUntil
+          status
           insuredPerson {
             name
             email
@@ -31,6 +32,11 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
             vehicleModel
             year
             licensePlate
+          }
+          payment {
+            status
+            link
+            price
           }
         }
       }
@@ -43,6 +49,7 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
         {
           effective_from: '2024-03-19',
           effective_until: '2025-03-19',
+          status: 'draft',
           insured_person: {
             name: 'Maria Silva',
             document: '123.456.789-00',
@@ -53,6 +60,12 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
             vehicle_model: 'Gol 1.6',
             year: 2022,
             license_plate: 'ABC-5678'
+          },
+          payment: {
+            link: 'https://checkout.stripe.com/c/pay/cs_test_a1',
+            status: 'pending',
+            price: '1000.0',
+            external_id: 'cs_test_a1'
           }
         }
       ].to_json
@@ -64,6 +77,7 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
             {
               effectiveFrom: '2024-03-19',
               effectiveUntil: '2025-03-19',
+              status: 'draft',
               insuredPerson: {
                 name: 'Maria Silva',
                 document: '123.456.789-00',
@@ -74,6 +88,11 @@ RSpec.describe Resolvers::PoliciesByEmailResolver, type: :request do
                 vehicleModel: 'Gol 1.6',
                 year: 2022,
                 licensePlate: 'ABC-5678'
+              },
+              payment: {
+                link: "https://checkout.stripe.com/c/pay/cs_test_a1",
+                status: "pending",
+                price: 1000.0
               }
             },
           ]

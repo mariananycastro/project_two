@@ -7,7 +7,7 @@ class BunnyConnectionService
     )
     conn.start
 
-    return false if conn.status != :open 
+    return false if conn.status != :open
 
     ch = conn.create_channel
     queue = ch.queue(queue_name, durable: true)

@@ -22,6 +22,7 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
           policyQuery(id: #{query_id}) {
             effectiveFrom
             effectiveUntil
+            status
             insuredPerson {
               name
               email
@@ -32,6 +33,11 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
               vehicleModel
               year
               licensePlate
+            }
+            payment {
+              status
+              link
+              price
             }
           }
         }
@@ -44,6 +50,7 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
         {
           effective_from: '2024-03-19',
           effective_until: '2026-03-19',
+          status: 'draft',
           insured_person: {
             name: 'Maria Silva',
             email: 'maria@email.com',
@@ -54,6 +61,11 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
             vehicle_model: 'Uno 1.0',
             year: 1996,
             license_plate: 'ABC-1234'
+          },
+          payment: {
+            link: "https://checkout.stripe.com/c/pay/cs_test_a1",
+            status: "pending",
+            price: 1000.0
           }
         }.to_json
       end
@@ -63,6 +75,7 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
             policyQuery: {
               effectiveFrom: '2024-03-19',
               effectiveUntil: '2026-03-19',
+              status: 'draft',
               insuredPerson: {
                 name: 'Maria Silva',
                 email: 'maria@email.com',
@@ -73,6 +86,11 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
                 vehicleModel: 'Uno 1.0',
                 year: 1996,
                 licensePlate: 'ABC-1234'
+              },
+              payment: {
+                link: "https://checkout.stripe.com/c/pay/cs_test_a1",
+                status: "pending",
+                price: 1000.0
               }
             }
           }
@@ -96,8 +114,10 @@ RSpec.describe Resolvers::PolicyResolver, type: :request do
             policyQuery: {
               effectiveFrom: nil,
               effectiveUntil: nil,
+              status: nil,
               insuredPerson: nil,
-              vehicle: nil
+              vehicle: nil,
+              payment: nil
             }
           }
         }
