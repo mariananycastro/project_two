@@ -118,7 +118,7 @@ RSpec.describe Resolvers::PoliciesResolver, type: :request do
 
     it 'return policy info' do
       stub_request(:get, "#{ENV['APP_ONE_PATH']}/policies/").to_return(status: 200, body: {}.to_json)
-      
+
       graphql_request
 
       expect(JSON.parse(response.body).deep_symbolize_keys).to eq(query_response.deep_symbolize_keys)
